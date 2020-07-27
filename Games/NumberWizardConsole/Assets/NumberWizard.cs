@@ -12,8 +12,11 @@ public class NumberWizard : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        
+        StartGame();   
+    }
 
+    void StartGame()
+    {
         Debug.Log("Welcome to Number Wizard!");
         Debug.Log("Pick a number, but don't tell me what it is...");
         Debug.Log($"The lowest number you can pick is {minNumber}.");
@@ -26,48 +29,67 @@ public class NumberWizard : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
-
         if (Input.GetKeyDown(KeyCode.UpArrow)) 
         {
-            Debug.Log($"Okay... Is your number higher or lower than {computerGuess}?");
             minNumber = computerGuess;
-            computerGuess = (maxNumber + minNumber) / 2;
-            tryCounter++;
+            NextGuess();
         }
             
         else if (Input.GetKeyDown(KeyCode.DownArrow))
         {
-            Debug.Log($"Okay... Is your number higher or lower than {computerGuess}?");
+            
             maxNumber = computerGuess;
-            computerGuess = (maxNumber + minNumber) / 2;
-            tryCounter++;
+            NextGuess();
         }
         
         else if (Input.GetKeyDown(KeyCode.Return)) 
         {
-            if (tryCounter == 1)
-            {
-                Debug.Log("(On my first try?!)");
-                Debug.Log($"Your number was: {computerGuess}");
-                Debug.Log("Behold my psychic abilities!");
-            }
-
-            else if (tryCounter > 4)
-            {
-                Debug.Log("Whew, I finally got it!");
-                Debug.Log($"Your number was: {computerGuess}");
-                Debug.Log($"It took me {tryCounter} tries to get your number correct!");
-                Debug.Log("(I'm not very good at this am I...)");
-            }
-            
-            else
-            {
-                Debug.Log("Wow! I got it!");
-                Debug.Log($"Your number was: {computerGuess}");
-                Debug.Log($"It took me {tryCounter} tries to get your number correct!");
-            }
+            Win();
+            ResetGame();
+            StartGame();
         }
-            
+    }
+
+    void NextGuess()
+    {
+        computerGuess = (maxNumber + minNumber) / 2;
+        Debug.Log($"Okay... Is your number higher or lower than {computerGuess}?");
+        tryCounter++;
+    }
+
+    void Recap()
+    {
+        Debug.Log($"Your number was: {computerGuess}");
+        Debug.Log($"It took me {tryCounter} tries to get your number correct!");
+    }
+
+    void Win()
+    {
+        if (tryCounter == 1)
+        {
+            Debug.Log("(On my first try?!)");
+            Recap();
+            Debug.Log("Behold: my psychic abilities!");
+        }
+
+        else if (tryCounter > 4)
+        {
+            Debug.Log("(Whew, I finally got it!)");
+            Recap();
+            Debug.Log("(I'm not very good at this am I...)");
+        }
+
+        else
+        {
+            Debug.Log("(Wow! I got it!)");
+            Recap();
+        }
+    }
+    void ResetGame()
+    {
+        maxNumber = 1000;
+        minNumber = 1;
+        computerGuess = 500;
+        tryCounter = 1;
     }
 }
